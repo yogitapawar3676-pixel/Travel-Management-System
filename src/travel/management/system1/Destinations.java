@@ -1,183 +1,188 @@
-
 package travel.management.system1;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
+import java.net.URL;
 
 public class Destinations extends JFrame implements Runnable {
 
-    JLabel l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19;
-    JLabel caption;
-    Thread th;
+    JLabel imageLabel;
+    JLabel placeName;
 
-    public void run() {
-        try {
+    JButton explore;
+    JButton back;
 
-            l2.setVisible(true);
-            caption.setText("Kaas Pathar");
-            l2.add(caption);
-            Thread.sleep(2800);
-            l2.setVisible(false);
-            l3.setVisible(true);
-            caption.setText("Mahabaleshwar");
-            l3.add(caption);
-            l3.setVisible(true);
-            Thread.sleep(2800);
-            l3.setVisible(false);
-            l4.setVisible(true);
-            caption.setText("Raighadh");
-            l4.add(caption);
-            Thread.sleep(2800);
-            l4.setVisible(false);
-            l5.setVisible(true);
-            caption.setText("Rajgadh");
-            l5.add(caption);
-            Thread.sleep(2800);
-            l5.setVisible(false);
-            l6.setVisible(true);
-            caption.setText("Lonaval");
-            l6.add(caption);
-            Thread.sleep(2800);
-            l6.setVisible(false);
-            l7.setVisible(true);
-            caption.setText("Kokan");
-            l7.add(caption);
-            Thread.sleep(2800);
-            l7.setVisible(false);
-            l8.setVisible(true);
-            caption.setText("Panhala");
-            l8.add(caption);
-            Thread.sleep(2800);
-            l8.setVisible(false);
-            l9.setVisible(true);
-            caption.setText("Lake");
-            l9.add(caption);
-            Thread.sleep(2800);
-            l9.setVisible(false);
-            l10.setVisible(true);
-            caption.setText("Panchgani");
-            l10.add(caption);
-            Thread.sleep(2800);
-            l10.setVisible(false);
-            l11.setVisible(true);
-            caption.setText("Lohagadh");
-            l11.add(caption);
-            Thread.sleep(2800);
-            l11.setVisible(false);
-            
-            this.setVisible(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    Thread thread;
 
-    }
+    int index = 0;
+
+    String images[] = {
+
+            "desti1.jpg",
+            "desti2.jpg",
+            "desti3.jpg",
+            "desti4.jpg",
+            "desti5.jpg",
+            "desti6.jpg",
+            "desti7.jpg",
+            "desti8.jpg",
+            "desti9.png",
+            "desti10.jpg"
+    };
+
+    String places[] = {
+
+            "Kaas Pathar",
+            "Mahabaleshwar",
+            "Raigad Fort",
+            "Rajgad Fort",
+            "Lonavala",
+            "Konkan",
+            "Panhala",
+            "Lake View",
+            "Panchgani",
+            "Lohagad"
+    };
 
     Destinations() {
 
-        setBounds(500,200,800,600);
-        getContentPane().setBackground(new Color(220, 250, 250));
-        
-        th = new Thread(this);
-    
-        caption = new JLabel();
-        caption.setBounds(50, 450, 1000, 70);
-        caption.setForeground(Color.WHITE);
-        caption.setFont(new Font("Tahoma", Font.PLAIN, 40));
-        add(caption);
+        setTitle("Explore Destinations");
 
-        
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/desti1.jpg"));
-        Image i2 = i1.getImage().getScaledInstance(900, 700, Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
-        l2 = new JLabel(i3);
-        l2.setBounds(0, 0, 900, 700);
-        add(l2);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         setLayout(null);
 
-        ImageIcon i4 = new ImageIcon(ClassLoader.getSystemResource("icons/desti2.jpg"));
-        Image i5 = i4.getImage().getScaledInstance(900, 700, Image.SCALE_DEFAULT);
-        ImageIcon i6 = new ImageIcon(i5);
-        l3 = new JLabel(i4);
-        l3.setBounds(0, 0, 900, 700);
-        add(l3);
-        l3.setVisible(false);
+        getContentPane().setBackground(Color.BLACK);
 
-        ImageIcon i7 = new ImageIcon(ClassLoader.getSystemResource("icons/desti3.jpg"));
-        Image i8 = i7.getImage().getScaledInstance(900, 700, Image.SCALE_DEFAULT);
-        ImageIcon i9 = new ImageIcon(i8);
-        l4 = new JLabel(i9);
-        l4.setBounds(0, 0, 900, 700);
-        add(l4);
-        l4.setVisible(false);
+        // ================= IMAGE LABEL =================
 
-        ImageIcon i10 = new ImageIcon(ClassLoader.getSystemResource("icons/desti4.jpg"));
-        Image i11 = i10.getImage().getScaledInstance(900, 700, Image.SCALE_DEFAULT);
-        ImageIcon i12 = new ImageIcon(i11);
-        l5 = new JLabel(i12);
-        l5.setBounds(0, 0, 900, 700);
-        add(l5);
-        l5.setVisible(false);
+        imageLabel = new JLabel();
+        imageLabel.setBounds(0, 0, 1600, 900);
+        add(imageLabel);
 
-        ImageIcon i13 = new ImageIcon(ClassLoader.getSystemResource("icons/desti5.jpg"));
-        Image i14 = i13.getImage().getScaledInstance(900, 700, Image.SCALE_DEFAULT);
-        ImageIcon i15 = new ImageIcon(i14);
-        l6 = new JLabel(i15);
-        l6.setBounds(0, 0, 900, 700);
-        add(l6);
-        l6.setVisible(false);
+        // ================= INFO PANEL =================
 
-        ImageIcon i16 = new ImageIcon(ClassLoader.getSystemResource("icons/desti6.jpg"));
-        Image i17 = i16.getImage().getScaledInstance(900, 700, Image.SCALE_DEFAULT);
-        ImageIcon i18 = new ImageIcon(i17);
-        l7 = new JLabel(i18);
-        l7.setBounds(0, 0, 900, 700);
-        add(l7);
-        l7.setVisible(false);
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(null);
+        infoPanel.setBackground(new Color(0, 0, 0, 160));
+        infoPanel.setBounds(0, 500, 1600, 300);
+        add(infoPanel);
 
-        ImageIcon i19 = new ImageIcon(ClassLoader.getSystemResource("icons/desti7.jpg"));
-        Image i20 = i19.getImage().getScaledInstance(900, 700, Image.SCALE_DEFAULT);
-        ImageIcon i21 = new ImageIcon(i20);
-        l8 = new JLabel(i21);
-        l8.setBounds(0, 0, 900, 700);
-        add(l8);
-        l8.setVisible(false);
+        // ================= PLACE NAME =================
 
-        ImageIcon i22 = new ImageIcon(ClassLoader.getSystemResource("icons/desti8.jpg"));
-        Image i23 = i22.getImage().getScaledInstance(900, 700, Image.SCALE_DEFAULT);
-        ImageIcon i24 = new ImageIcon(i23);
-        l9 = new JLabel(i24);
-        l9.setBounds(0, 0, 900, 700);
-        add(l9);
-        l9.setVisible(false);
+        placeName = new JLabel();
+        placeName.setBounds(80, 30, 800, 60);
+        placeName.setForeground(Color.WHITE);
+        placeName.setFont(new Font("Segoe UI", Font.BOLD, 45));
+        infoPanel.add(placeName);
 
-        ImageIcon i25 = new ImageIcon(ClassLoader.getSystemResource("icons/desti9.png"));
-        Image i26 = i25.getImage().getScaledInstance(900, 700, Image.SCALE_DEFAULT);
-        ImageIcon i27 = new ImageIcon(i26);
-        l10 = new JLabel(i27);
-        l10.setBounds(0, 0, 900, 700);
-        add(l10);
-        l10.setVisible(false);
+        // ================= EXPLORE BUTTON (FIXED) =================
 
-        ImageIcon i28 = new ImageIcon(ClassLoader.getSystemResource("icons/desti10.jpg"));
-        Image i29 = i28.getImage().getScaledInstance(900, 700, Image.SCALE_DEFAULT);
-        ImageIcon i30 = new ImageIcon(i29);
-        l11 = new JLabel(i30);
-        l11.setBounds(0, 0, 900, 700);
-        add(l11);
-        l11.setVisible(false);
+        explore = new JButton("Explore Now");
+        explore.setBounds(80, 140, 180, 45);
+        explore.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        explore.setBackground(new Color(46, 134, 222));
+        explore.setForeground(Color.WHITE);
+        explore.setFocusPainted(false);
+        explore.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        th.start();
-        
-       setVisible(true); 
-       
+        // IMPORTANT FIX: Safe action handling
+        explore.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                if (index >= 0 && index < places.length) {
+                    JOptionPane.showMessageDialog(null,
+                            "Welcome to " + places[index]);
+                }
+            }
+        });
+
+        infoPanel.add(explore);
+
+        // ================= BACK BUTTON =================
+
+        back = new JButton("Back");
+        back.setBounds(290, 140, 120, 45);
+        back.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        back.setFocusPainted(false);
+        back.setBackground(Color.BLACK);
+        back.setForeground(Color.WHITE);
+        back.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        back.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+            }
+        });
+
+        infoPanel.add(back);
+
+        // ================= START SLIDER =================
+
+        thread = new Thread(this);
+        thread.start();
+
+        setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new Destinations();
+ @Override
+public void run() {
 
+    try {
+
+        while (true) {
+
+            String path = "icons/" + images[index];
+
+            URL url = ClassLoader.getSystemResource(path);
+
+            if (url == null) {
+
+                System.out.println("Image missing: " + path);
+
+                index++;
+
+                if (index == images.length) {
+                    index = 0;
+                }
+
+                Thread.sleep(2000);
+                continue;
+            }
+
+            ImageIcon icon = new ImageIcon(url);
+
+            Image img = icon.getImage().getScaledInstance(
+                    1600,
+                    900,
+                    Image.SCALE_SMOOTH
+            );
+
+            imageLabel.setIcon(new ImageIcon(img));
+
+            placeName.setText(places[index]);
+
+            index++;
+
+            if (index == images.length) {
+                index = 0;
+            }
+
+            Thread.sleep(3000);
+
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
 
+public static void main(String[] args) {
+
+    new Destinations();
+
+}
 }

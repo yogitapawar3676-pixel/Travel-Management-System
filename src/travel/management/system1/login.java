@@ -1,146 +1,142 @@
 package travel.management.system1;
+
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
 import java.sql.*;
-public class login extends JFrame implements ActionListener{
-    
-    JButton login,signup,password;
-    JTextField tfusername,tfpassword ;
-    
-    login()
-    {
-        setSize(900 , 400);
-        setLocation(350, 200);
+import javax.swing.*;
+
+public class login extends JFrame implements ActionListener {
+
+    JTextField tfusername;
+    JPasswordField tfpassword;
+
+    JButton login, signup;
+
+    public login() {
+
+        setTitle("TravelBoard - Login");
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(Color.white);
-        
-        //this code for left part of frame
-        JPanel p1 = new JPanel();
-        p1.setBackground(new Color(131 , 193, 233));
-        p1.setBounds(0, 0, 400, 400);
-        p1.setLayout(null);
-        add(p1);
-        
-        //this is for right part of frame
-        JPanel p2 = new JPanel();
-        p2.setLayout(null);
-        p2.setBounds(400,30,450,300);
-        add(p2);
-        
-        //this is for adding img in left part 
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/login.png"));
-        Image i2 = i1.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT); 
-        ImageIcon i3 = new ImageIcon(i2);
-        JLabel image = new JLabel(i3);
-        image.setBounds(100, 120, 200, 200);
-        p1.add(image);
-        
-        //this for username label
-        JLabel lbusername = new JLabel("Username");
-        lbusername.setBounds(60, 20, 100, 25);
-        lbusername.setFont(new Font("SAN SERIF", Font.PLAIN,20));
-        p2.add(lbusername);
-        
-        //this for user text field
+
+        // FULL SCREEN BACKGROUND PANEL
+        JPanel background = new JPanel() {
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+
+                Color c1 = new Color(20, 30, 48);
+                Color c2 = new Color(36, 59, 85);
+
+                GradientPaint gp = new GradientPaint(0, 0, c1, 0, getHeight(), c2);
+                g2.setPaint(gp);
+                g2.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
+
+        background.setLayout(null);
+        setContentPane(background);
+
+        // ================= CENTER CARD FIX =================
+        int cardWidth = 400;
+        int cardHeight = 420;
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (screenSize.width - cardWidth) / 2;
+        int y = (screenSize.height - cardHeight) / 2;
+
+        JPanel card = new JPanel();
+        card.setBounds(x, y, cardWidth, cardHeight);
+        card.setLayout(null);
+        card.setBackground(new Color(255, 255, 255, 40));
+        card.setBorder(BorderFactory.createLineBorder(new Color(255,255,255,80), 2));
+
+        background.add(card);
+
+        // TITLE
+        JLabel title = new JLabel("Welcome Back");
+        title.setBounds(120, 30, 200, 40);
+        title.setForeground(Color.WHITE);
+        title.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        card.add(title);
+
+        // USERNAME
+        JLabel user = new JLabel("Username");
+        user.setBounds(50, 100, 200, 25);
+        user.setForeground(Color.WHITE);
+        card.add(user);
+
         tfusername = new JTextField();
-        tfusername.setBounds(60, 60, 300, 30);
-        tfusername.setBorder(BorderFactory.createEmptyBorder());
-        p2.add(tfusername);
-        
-        
-        
-         //this for password label
-        JLabel lbpassword = new JLabel("Password");
-        lbpassword.setBounds(60, 110, 100, 25);
-        lbpassword.setFont(new Font("SAN SERIF", Font.PLAIN,20));
-        p2.add(lbpassword);
-        
-        //this for password text field
-        tfpassword = new JTextField();
-        tfpassword.setBounds(60, 150, 300, 30);
-        tfpassword.setBorder(BorderFactory.createEmptyBorder());
-        p2.add(tfpassword);
-       
-        
-        login = new JButton("Log in");
-        login.setBackground(new Color(131,193,231));
-        login.setForeground(Color.white);
-        login.setBorder(BorderFactory.createEmptyBorder());
-        login.setBounds(60, 200, 130, 30);
+        tfusername.setBounds(50, 130, 300, 35);
+        tfusername.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        card.add(tfusername);
+
+        // PASSWORD
+        JLabel pass = new JLabel("Password");
+        pass.setBounds(50, 180, 200, 25);
+        pass.setForeground(Color.WHITE);
+        card.add(pass);
+
+        tfpassword = new JPasswordField();
+        tfpassword.setBounds(50, 210, 300, 35);
+        card.add(tfpassword);
+
+        // LOGIN BUTTON
+        login = new JButton("LOGIN");
+        login.setBounds(50, 270, 300, 40);
+        login.setBackground(new Color(0, 153, 255));
+        login.setForeground(Color.WHITE);
+        login.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        login.setFocusPainted(false);
         login.addActionListener(this);
-        p2.add(login);
-        
+        card.add(login);
+
+        // SIGNUP BUTTON
         signup = new JButton("Sign Up");
-        signup.setBackground(new Color(131,193,231));
-        signup.setForeground(Color.white);
-        signup.setBorder(BorderFactory.createEmptyBorder());
-        signup.setBounds(230, 200, 130, 30);
+        signup.setBounds(50, 320, 300, 35);
+        signup.setBackground(new Color(46, 204, 113));
+        signup.setForeground(Color.WHITE);
+        signup.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        signup.setFocusPainted(false);
         signup.addActionListener(this);
-        p2.add(signup);
-        
-        password = new JButton("Forget Password");
-        password.setBackground(new Color(131,193,231));
-        password.setForeground(Color.white);
-        password.setBorder(BorderFactory.createEmptyBorder());
-        password.setBounds(130, 250, 130, 30);
-        password.addActionListener(this);
-        p2.add(password);
-        
-        JLabel text = new JLabel("Trouble in sign in");
-        text.setBounds(300,250,150,20);
-        text.setForeground(Color.red);
-        p2.add(text);
-        
+        card.add(signup);
+
         setVisible(true);
-        
     }
-    
-    public void actionPerformed(ActionEvent ac)
-    {
-        if(ac.getSource()==login)
-        {
-            try{
-                String username = tfusername.getText();
+
+    public void actionPerformed(ActionEvent ae) {
+
+        if (ae.getSource() == login) {
+
+            try {
+                String user = tfusername.getText();
                 String pass = tfpassword.getText();
-                String query = "Select * from account1 where username = '"+username+"'And password='"+pass+"'";
+
                 Conn c = new Conn();
-                ResultSet rs = c.s.executeQuery(query);
-                
-                if(rs.next())
-                {
+                ResultSet rs = c.s.executeQuery(
+                        "select * from account1 where username='" + user + "' and password='" + pass + "'"
+                );
+
+                if (rs.next()) {
+                    JOptionPane.showMessageDialog(this, "Login Successful");
                     setVisible(false);
-                    new Loading(username);
+                    new Dashboard(user);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Invalid Login");
                 }
-                
-                
-                else
-                {
-                    JOptionPane.showMessageDialog(null, "Incorrect Password or Username");
-                }
-            
-            }   
-            
-            catch(Exception e)
-            {
+
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        else if(ac.getSource()==password)
-        {
-            setVisible(false);
-            new ForgetPassword();
-        }
-        else if(ac.getSource()==signup)
-        {
+
+        else if (ae.getSource() == signup) {
             setVisible(false);
             new Signup();
         }
     }
-//    
-    public static void main(String [] args)
-    {
-         new login();
+
+    public static void main(String[] args) {
+        new login();
     }
-    
 }

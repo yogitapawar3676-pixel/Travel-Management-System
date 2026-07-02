@@ -1,233 +1,652 @@
 package travel.management.system1;
-import javax.swing.*;
+
+
 import java.awt.*;
-import java.sql.*;
 import java.awt.event.*;
+import java.sql.*;
+import javax.swing.*;
+
+
 
 public class UpdateCustomer extends JFrame implements ActionListener {
-    
+
+
+
     JLabel Labelusername, Labelname;
-    JComboBox comboid, combogender;
-    JTextField tfnumber, tfaddress,tfcountry,tfemail,tfphone,tfid,tfgender;
-    JRadioButton rmale,rfemale,rother;
-    JButton add,back;
+
+    JTextField tfid, tfnumber, tfgender,
+            tfcountry, tfaddress, tfphone, tfemail;
+
+
+    JButton update, back;
+
+
     String username;
-    UpdateCustomer(String username)
-    {
-        this.username = username;
-        setBounds(500,200,850,550);
+
+
+
+    UpdateCustomer(String username){
+
+
+
+        this.username=username;
+
+
+
+        setTitle("Update Customer");
+
+
+        setSize(1000,650);
+
+
+        setLocationRelativeTo(null);
+
+
         setLayout(null);
-        getContentPane().setBackground(Color.WHITE);
-        
-        JLabel text = new JLabel("UPDATE CUSTOMER DETAILS");
-        text.setBounds(50,0,300,25);
-        text.setFont(new Font("Tahoma",Font.BOLD,20));
-        add(text);
-        
-        
-        JLabel lblusername = new JLabel("username");
-        lblusername.setBounds(30, 50, 150, 25);
-        add(lblusername);
-        
-        
-        Labelusername = new JLabel();
-        Labelusername.setBounds(220, 50, 150, 25);
-        add(Labelusername);
-        
-        
-        JLabel lblid = new JLabel("Id");
-        lblid.setBounds(30, 90, 150, 25);
-        add(lblid);
-//        
-//        //combo box is used for creating menu or dropdown box in window 
-//        //in combo box we need to create a object of string class and it take the all the string 
-//        //argument which u want to in u r menu or drop down box
-//        comboid = new JComboBox(new String[]{"Adhar Card", "Pan Card","Passport", "Driving lience"});
-//        comboid.setBounds(220, 90,150 , 25);
-//        comboid.setBackground(Color.white);
-//        add(comboid);
-        
-        tfid = new JTextField();
-        tfid.setBounds(220, 90,150 , 25);
-        add(tfid);
-        
-        JLabel lblnumber = new JLabel("Number");
-        lblnumber.setBounds(30, 130, 150, 25);
-        add(lblnumber);
-        
-        tfnumber = new JTextField();
-        tfnumber.setBounds(220, 130,150 , 25);
-        add(tfnumber);
-        
-        
-        JLabel lblname = new JLabel("Name");
-        lblname.setBounds(30, 170, 150, 25);
-        add(lblname);
-        
-        
-        Labelname = new JLabel();
-        Labelname.setBounds(220, 170, 150, 25);
-        add(Labelname);
-        
-        
-        JLabel lblgender = new JLabel("Gender");
-        lblgender.setBounds(30, 210, 150, 25);
-        add(lblgender);
-        
-//        combogender = new JComboBox(new String[]{"Male", "Female","Other"});
-//        combogender.setBounds(220, 210,150 , 25);
-//        combogender.setBackground(Color.white);
-//        add(combogender);
-        
-//        rmale = new JRadioButton("Male");
-//        rmale.setBounds(220, 210, 70, 25);
-//        rmale.setBackground(Color.white);
-//        add(rmale);
-//        
-//        rfemale = new JRadioButton("Female");
-//        rfemale.setBounds(300, 210, 70, 25);
-//        rfemale.setBackground(Color.white);
-//        add(rfemale);
-//        
-//        ButtonGroup bg = new ButtonGroup();
-//        bg.add(rmale);
-//        bg.add(rfemale);
-        
 
-        tfgender = new JTextField();
-        tfgender.setBounds(220, 210,150 , 25);
-        add(tfgender);
-        
-        JLabel lblcountry = new JLabel("Country");
-        lblcountry.setBounds(30, 250, 150, 25);
-        add(lblcountry);
-        
-        tfcountry = new JTextField();
-        tfcountry.setBounds(220, 250,150 , 25);
-        add(tfcountry);
-        
-        
-         JLabel lbladress = new JLabel("Address");
-        lbladress.setBounds(30, 290, 150, 25);
-        add(lbladress);
-        
-        tfaddress = new JTextField();
-        tfaddress.setBounds(220, 290,150 , 25);
-        add(tfaddress);
-        
-        
-        JLabel lblemail = new JLabel("Email i'd");
-        lblemail.setBounds(30, 370, 150, 25);
-        add(lblemail);
-        
-        tfemail = new JTextField();
-        tfemail.setBounds(220, 370,150 , 25);
-        add(tfemail);
-        
-        
-         JLabel lblphone = new JLabel("Phone");
-        lblphone.setBounds(30, 330, 150, 25);
-        add(lblphone);
-        
-        tfphone = new JTextField();
-        tfphone.setBounds(220, 330,150 , 25);
-        add(tfphone);
-        
-        add = new JButton("Update");
-        add.setBackground(Color.BLACK);
-        add.setForeground(Color.WHITE);
-        add.setBorder(BorderFactory.createEmptyBorder());
-        add.setBounds(70,420,100,25);
-        add.addActionListener(this);
-        add(add);
-        
-        back = new JButton("Back");
-        back.setBackground(Color.BLACK);
+
+        getContentPane().setBackground(
+                new Color(245,247,250)
+        );
+
+
+
+
+
+        // ================= HEADER =================
+
+
+
+        JPanel header =
+                new JPanel();
+
+
+        header.setBounds(
+                0,
+                0,
+                1000,
+                80
+        );
+
+
+        header.setBackground(
+                new Color(25,42,86)
+        );
+
+
+        header.setLayout(null);
+
+
+
+        JLabel title =
+                new JLabel(
+                "UPDATE CUSTOMER DETAILS"
+                );
+
+
+        title.setBounds(
+                280,
+                20,
+                500,
+                40
+        );
+
+
+        title.setForeground(Color.WHITE);
+
+
+        title.setFont(
+                new Font(
+                "Segoe UI",
+                Font.BOLD,
+                28)
+        );
+
+
+        header.add(title);
+
+
+        add(header);
+
+
+
+
+
+
+
+
+        // ================= CARD =================
+
+
+
+        JPanel card =
+                new JPanel();
+
+
+        card.setBounds(
+                80,
+                120,
+                600,
+                420
+        );
+
+
+        card.setLayout(null);
+
+
+        card.setBackground(Color.WHITE);
+
+
+        add(card);
+
+
+
+
+
+
+
+        Labelusername =
+                new JLabel();
+
+
+        Labelusername.setBounds(
+                200,
+                40,
+                200,
+                30
+        );
+
+
+        card.add(
+                createRow(card,"Username",Labelusername,40)
+        );
+
+
+
+
+
+
+
+        tfid =
+                new JTextField();
+
+
+        card.add(
+                createField(card,"ID",tfid,90)
+        );
+
+
+
+        tfnumber =
+                new JTextField();
+
+
+        card.add(
+                createField(card,"Number",tfnumber,140)
+        );
+
+
+
+
+        Labelname =
+                new JLabel();
+
+
+        card.add(
+                createRow(card,"Name",Labelname,190)
+        );
+
+
+
+
+        tfgender =
+                new JTextField();
+
+
+        card.add(
+                createField(card,"Gender",tfgender,240)
+        );
+
+
+
+
+        tfcountry =
+                new JTextField();
+
+
+        card.add(
+                createField(card,"Country",tfcountry,290)
+        );
+
+
+
+
+        tfaddress =
+                new JTextField();
+
+
+        card.add(
+                createField(card,"Address",tfaddress,340)
+        );
+
+
+
+
+        tfphone =
+                new JTextField();
+
+
+        card.add(
+                createField(card,"Phone",tfphone,390)
+        );
+
+
+
+
+        tfemail =
+                new JTextField();
+
+
+        card.add(
+                createField(card,"Email",tfemail,440)
+        );
+
+
+
+
+
+
+
+
+
+        // ================= BUTTONS =================
+
+
+
+        update =
+                new JButton("UPDATE");
+
+
+        update.setBounds(
+                200,
+                560,
+                130,
+                40
+        );
+
+
+        update.setBackground(
+                new Color(46,134,222)
+        );
+
+
+        update.setForeground(Color.WHITE);
+
+
+        update.addActionListener(this);
+
+
+        add(update);
+
+
+
+
+
+        back =
+                new JButton("BACK");
+
+
+        back.setBounds(
+                360,
+                560,
+                130,
+                40
+        );
+
+
+        back.setBackground(
+                new Color(231,76,60)
+        );
+
+
         back.setForeground(Color.WHITE);
-        back.setBorder(BorderFactory.createEmptyBorder());
-        back.setBounds(220,420,100,25);
+
+
         back.addActionListener(this);
+
+
         add(back);
-        
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/update.jpg"));
-        Image i2= i1.getImage().getScaledInstance(500, 350, Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
-        JLabel image = new JLabel(i3);
-        image.setBounds(400, 100, 500, 350);
+
+
+
+
+
+
+
+        // ================= IMAGE =================
+
+
+
+        ImageIcon icon =
+                new ImageIcon(
+                "images/travel_bg.jpg"
+                );
+
+
+
+        Image img =
+                icon.getImage()
+                .getScaledInstance(
+                        250,
+                        250,
+                        Image.SCALE_SMOOTH
+                );
+
+
+
+        JLabel image =
+                new JLabel(
+                new ImageIcon(img)
+                );
+
+
+        image.setBounds(
+                720,
+                180,
+                250,
+                250
+        );
+
+
         add(image);
-        
-        //now lets fetch the username and Name from database
-        
+
+
+
+
+
+
+
+
+        // ================= FETCH DATA =================
+
+
         try{
-            Conn c = new Conn();
-            ResultSet rs = c.s.executeQuery("select * from customer where username = '"+username+"'");
-            while(rs.next())
-            {
-                Labelusername.setText(rs.getString("username"));
-                Labelname.setText(rs.getString("name"));
-                tfid.setText(rs.getString("id"));
-                tfnumber.setText(rs.getString("number"));
-                tfgender.setText(rs.getString("gender"));
-                tfcountry.setText(rs.getString("country"));
-                tfaddress.setText(rs.getString("address"));
-                tfphone.setText(rs.getString("phone"));
-                tfemail.setText(rs.getString("email"));
-                
+
+
+            Conn c =
+                    new Conn();
+
+
+
+            ResultSet rs =
+                    c.s.executeQuery(
+                    "select * from customer where username='"+username+"'"
+                    );
+
+
+
+            while(rs.next()){
+
+
+
+                Labelusername.setText(
+                        rs.getString("username")
+                );
+
+
+                Labelname.setText(
+                        rs.getString("name")
+                );
+
+
+                tfid.setText(
+                        rs.getString("id")
+                );
+
+
+                tfnumber.setText(
+                        rs.getString("number")
+                );
+
+
+                tfgender.setText(
+                        rs.getString("gender")
+                );
+
+
+                tfcountry.setText(
+                        rs.getString("country")
+                );
+
+
+                tfaddress.setText(
+                        rs.getString("address")
+                );
+
+
+                tfphone.setText(
+                        rs.getString("phone")
+                );
+
+
+                tfemail.setText(
+                        rs.getString("email")
+                );
+
             }
-            
+
+
         }
-        catch(Exception e)
-        {
+        catch(Exception e){
+
             e.printStackTrace();
+
         }
-        
-        
-        
-        
+
+
+
+
         setVisible(true);
-    }
-    
-    public void actionPerformed(ActionEvent ae)
-    {
-        if(ae.getSource()==add)
-        { 
-            String username = Labelusername.getText();
-            String id = tfid.getText();
-                                                           
-            String number = tfnumber.getText();
-            String name = Labelname.getText();
-            String gender = tfgender.getText();
-            
-            String country = tfcountry.getText();
-            String address = tfaddress.getText();
-            String phone = tfphone.getText();
-            String email = tfemail.getText();
-            
-            try
-            {
-                     Conn c = new Conn();
-                     String query = "update customer set  username='"+username+"',id= '"+id+"',number='"+number+"',name='"+name+"',gender='"+gender+"',country='"+country+"',address='"+address+"',phone='"+phone+"',email='"+email+"'";
-                     c.s.executeUpdate(query);
-                     
-                     JOptionPane.showMessageDialog(null, "Customer details updated succsessfully");
-                     setVisible(false);
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-            setVisible(false);
-        }
+
     }
 
-    
-       public static void main(String[] arg)
-       {
-           new UpdateCustomer("Akku123");
-          
-       }
-    
+
+
+
+
+
+
+    private JLabel createRow(
+            JPanel panel,
+            String name,
+            JLabel value,
+            int y){
+
+
+
+        JLabel label =
+                new JLabel(name);
+
+
+        label.setBounds(
+                40,
+                y,
+                120,
+                30
+        );
+
+
+        label.setFont(
+                new Font(
+                "Segoe UI",
+                Font.BOLD,
+                14)
+        );
+
+
+        panel.add(label);
+
+
+
+        value.setBounds(
+                200,
+                y,
+                200,
+                30
+        );
+
+
+        return value;
+
+    }
+
+
+
+
+
+
+
+    private JTextField createField(
+            JPanel panel,
+            String name,
+            JTextField field,
+            int y){
+
+
+
+        JLabel label =
+                new JLabel(name);
+
+
+
+        label.setBounds(
+                40,
+                y,
+                120,
+                30
+        );
+
+
+        label.setFont(
+                new Font(
+                "Segoe UI",
+                Font.BOLD,
+                14)
+        );
+
+
+
+        panel.add(label);
+
+
+
+
+        field.setBounds(
+                200,
+                y,
+                250,
+                30
+        );
+
+
+
+        return field;
+
+    }
+
+
+
+
+
+
+
+
+
+    public void actionPerformed(ActionEvent ae){
+
+
+
+        if(ae.getSource()==update){
+
+
+            try{
+
+
+                Conn c =
+                        new Conn();
+
+
+
+                String query =
+
+                "update customer set " +
+
+                "id='"+tfid.getText()+"'," +
+
+                "number='"+tfnumber.getText()+"'," +
+
+                "gender='"+tfgender.getText()+"'," +
+
+                "country='"+tfcountry.getText()+"'," +
+
+                "address='"+tfaddress.getText()+"'," +
+
+                "phone='"+tfphone.getText()+"'," +
+
+                "email='"+tfemail.getText()+"'" +
+
+                " where username='"+Labelusername.getText()+"'";
+
+
+
+                c.s.executeUpdate(query);
+
+
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Customer Updated Successfully"
+                );
+
+
+                setVisible(false);
+
+
+
+            }
+            catch(Exception e){
+
+                e.printStackTrace();
+
+            }
+
+
+        }
+
+
+
+        else if(ae.getSource()==back){
+
+
+            setVisible(false);
+
+
+        }
+
+
+    }
+
+
+
+
+
+    public static void main(String args[]){
+
+
+        new UpdateCustomer("Rambo");
+
+
+    }
+
+
 }

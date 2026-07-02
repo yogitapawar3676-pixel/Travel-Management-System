@@ -1,289 +1,654 @@
-
 package travel.management.system1;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.ResultSet;
-public class BookHotel extends JFrame implements ActionListener{
-    
-    Choice chotel,cac,cfood;
-    JTextField tfpersons,tfdays;
+import java.sql.*;
+import javax.swing.*;
+import javax.swing.border.*;
+
+public class BookHotel extends JFrame implements ActionListener {
+
     String username;
-    JLabel labelusername,labelid , labelnumber,labelphone,labelprice;
-    JButton checkprice, bookhotel, back;
-    BookHotel(String username)
-    {
-        this.username = username;
-        
-        setBounds(350,200,1100,600);
+
+    // Customer Details
+    JLabel lblUsernameValue;
+    JLabel lblIdValue;
+    JLabel lblNumberValue;
+    JLabel lblPhoneValue;
+
+    // Hotel Details
+    JComboBox<String> cbHotel;
+    JComboBox<String> cbRoomType;
+    JComboBox<String> cbAC;
+    JComboBox<String> cbFood;
+
+    JTextField tfPersons;
+    JTextField tfDays;
+
+    JCheckBox wifi;
+    JCheckBox swimming;
+    JCheckBox laundry;
+    JCheckBox pickup;
+    JCheckBox parking;
+
+    JLabel lblHotelImage;
+
+    // Price Summary
+    JLabel lblRoomPrice;
+    JLabel lblGST;
+    JLabel lblExtra;
+    JLabel lblGrandTotal;
+
+    JButton btnCalculate;
+    JButton btnBook;
+    JButton btnReset;
+    JButton btnBack;
+
+    int roomCost = 0;
+    int totalAmount = 0;
+
+    public BookHotel(String username){
+
+        this.username=username;
+
+        setTitle("Book Hotel");
+
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         setLayout(null);
-        getContentPane().setBackground(Color.WHITE);
+
+        getContentPane().setBackground(new Color(240,244,248));
+
+        // ================= HEADER =================
+
+        JPanel header=new JPanel();
+
+        header.setBounds(0,0,1600,70);
+
+        header.setBackground(new Color(20,30,48));
+
+        header.setLayout(null);
+
+        add(header);
+
+        JLabel title=new JLabel("BOOK HOTEL");
+
+        title.setForeground(Color.WHITE);
+
+        title.setFont(new Font("Segoe UI",Font.BOLD,30));
+
+        title.setBounds(40,15,400,40);
+
+        header.add(title);
+
+        JLabel subtitle=new JLabel("Choose your perfect stay");
+
+        subtitle.setForeground(Color.LIGHT_GRAY);
+
+        subtitle.setBounds(45,45,300,20);
+
+        header.add(subtitle);
+
+        // ================= CUSTOMER PANEL =================
+
+        JPanel customerPanel=new JPanel();
+
+        customerPanel.setLayout(null);
+
+        customerPanel.setBounds(25,90,400,600);
+
+        customerPanel.setBackground(Color.WHITE);
+
+        customerPanel.setBorder(new LineBorder(new Color(220,220,220)));
+
+        add(customerPanel);
+
+        JLabel customerTitle=new JLabel("Customer Details");
+
+        customerTitle.setFont(new Font("Segoe UI",Font.BOLD,20));
+
+        customerTitle.setBounds(20,20,250,30);
+
+        customerPanel.add(customerTitle);
+
+        addLabel(customerPanel,"Username",70);
+
+        lblUsernameValue=new JLabel();
+
+        addValue(customerPanel,lblUsernameValue,70);
+
+        addLabel(customerPanel,"ID",120);
+
+        lblIdValue=new JLabel();
+
+        addValue(customerPanel,lblIdValue,120);
+
+        addLabel(customerPanel,"Number",170);
+
+        lblNumberValue=new JLabel();
+
+        addValue(customerPanel,lblNumberValue,170);
+
+        addLabel(customerPanel,"Phone",220);
+
+        lblPhoneValue=new JLabel();
+
+        addValue(customerPanel,lblPhoneValue,220);
+
+        // ================= BOOKING PANEL =================
+
+        JPanel bookingPanel=new JPanel();
+
+        bookingPanel.setLayout(null);
+
+        bookingPanel.setBounds(450,90,500,600);
+
+        bookingPanel.setBackground(Color.WHITE);
+
+        bookingPanel.setBorder(new LineBorder(new Color(220,220,220)));
+
+        add(bookingPanel);
+
+        JLabel bookingTitle=new JLabel("Booking Details");
+
+        bookingTitle.setFont(new Font("Segoe UI",Font.BOLD,20));
+
+        bookingTitle.setBounds(20,20,250,30);
+
+        bookingPanel.add(bookingTitle);
+
+        JLabel hotelLabel=new JLabel("Select Hotel");
+
+        hotelLabel.setBounds(30,80,150,25);
+
+        bookingPanel.add(hotelLabel);
+
+        cbHotel=new JComboBox<>();
+
+        cbHotel.setBounds(200,80,230,30);
+
+        bookingPanel.add(cbHotel);
+
+        JLabel roomLabel=new JLabel("Room Type");
+
+        roomLabel.setBounds(30,130,150,25);
+
+        bookingPanel.add(roomLabel);
+
+        cbRoomType=new JComboBox<>();
+
+        cbRoomType.addItem("Standard");
+
+        cbRoomType.addItem("Deluxe");
+
+        cbRoomType.addItem("Premium");
+
+        cbRoomType.addItem("Suite");
+
+        cbRoomType.setBounds(200,130,230,30);
+
+        bookingPanel.add(cbRoomType);
+
+        JLabel personsLabel=new JLabel("Persons");
+
+        personsLabel.setBounds(30,180,150,25);
+
+        bookingPanel.add(personsLabel);
+
+        tfPersons=new JTextField();
+
+        tfPersons.setBounds(200,180,230,30);
+
+        bookingPanel.add(tfPersons);
+
+        JLabel daysLabel=new JLabel("Days");
+
+        daysLabel.setBounds(30,230,150,25);
+
+        bookingPanel.add(daysLabel);
+
+        tfDays=new JTextField();
+
+        tfDays.setBounds(200,230,230,30);
+
+        bookingPanel.add(tfDays);
+
+        JLabel acLabel=new JLabel("AC / NON AC");
+
+        acLabel.setBounds(30,280,150,25);
+
+        bookingPanel.add(acLabel);
+
+        cbAC=new JComboBox<>();
+
+        cbAC.addItem("AC");
+
+        cbAC.addItem("Non AC");
+
+        cbAC.setBounds(200,280,230,30);
+
+        bookingPanel.add(cbAC);
+
+        JLabel foodLabel=new JLabel("Food");
+
+        foodLabel.setBounds(30,330,150,25);
+
+        bookingPanel.add(foodLabel);
+
+        cbFood=new JComboBox<>();
+
+        cbFood.addItem("Included");
+
+        cbFood.addItem("Not Included");
+
+        cbFood.setBounds(200,330,230,30);
+
+        bookingPanel.add(cbFood);
+
+        JLabel serviceLabel=new JLabel("Extra Services");
+
+        serviceLabel.setBounds(30,390,200,25);
+
+        bookingPanel.add(serviceLabel);
+
+        wifi=new JCheckBox("WiFi");
+
+        swimming=new JCheckBox("Swimming Pool");
+
+        laundry=new JCheckBox("Laundry");
+
+        pickup=new JCheckBox("Airport Pickup");
+
+        parking=new JCheckBox("Parking");
+
+        wifi.setBounds(200,390,150,25);
+
+        swimming.setBounds(200,420,180,25);
+
+        laundry.setBounds(200,450,150,25);
+
+        pickup.setBounds(200,480,180,25);
+
+        parking.setBounds(200,510,150,25);
+
+        bookingPanel.add(wifi);
+
+        bookingPanel.add(swimming);
+
+        bookingPanel.add(laundry);
+
+        bookingPanel.add(pickup);
+
+        bookingPanel.add(parking);
+
+                // ================= RIGHT PANEL =================
+
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(null);
+        rightPanel.setBounds(980, 90, 500, 600);
+        rightPanel.setBackground(Color.WHITE);
+        rightPanel.setBorder(new LineBorder(new Color(220,220,220)));
+        add(rightPanel);
+
+        JLabel summaryTitle = new JLabel("Hotel Preview & Price");
+        summaryTitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        summaryTitle.setBounds(20,20,300,30);
+        rightPanel.add(summaryTitle);
+
+        lblHotelImage = new JLabel();
+
+        lblHotelImage.setBounds(50,70,400,220);
+        lblHotelImage.setHorizontalAlignment(JLabel.CENTER);
+        lblHotelImage.setBorder(new LineBorder(Color.LIGHT_GRAY));
+
         
-        JLabel text = new JLabel("BOOK PACKAGE");
-        text.setBounds(100, 10, 200, 30);
-        text.setFont(new Font("Tahoma",Font.BOLD,20));
-        text.setForeground(Color.BLACK);
-        add(text);
- 
-        JLabel lblusername = new JLabel("Username");
-        lblusername.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblusername.setBounds(40,70,100,20);
-        add(lblusername);
-        
-        
-        labelusername = new JLabel();
-        labelusername.setFont(new Font("Tahoma",Font.PLAIN,16));
-        labelusername.setBounds(250,70,200,20);
-        add(labelusername);
-        
-        
-        JLabel lblpackage = new JLabel("Select Hotel");
-        lblpackage.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblpackage.setBounds(40,110,150,20);
-        add(lblpackage);
-        
-        
-        chotel = new Choice();
-        chotel.setBounds(250, 110, 200, 20);
-        add(chotel);
-        
+        rightPanel.add(lblHotelImage);
+
+        JLabel priceTitle = new JLabel("Price Summary");
+
+        priceTitle.setFont(new Font("Segoe UI",Font.BOLD,18));
+
+        priceTitle.setBounds(20,320,200,30);
+
+        rightPanel.add(priceTitle);
+
+        JLabel roomLbl = new JLabel("Room Price");
+
+        roomLbl.setBounds(40,370,150,25);
+
+        rightPanel.add(roomLbl);
+
+        lblRoomPrice = new JLabel("₹ 0");
+
+        lblRoomPrice.setBounds(320,370,120,25);
+
+        lblRoomPrice.setHorizontalAlignment(JLabel.RIGHT);
+
+        rightPanel.add(lblRoomPrice);
+
+        JLabel extraLbl = new JLabel("Extra Services");
+
+        extraLbl.setBounds(40,410,150,25);
+
+        rightPanel.add(extraLbl);
+
+        lblExtra = new JLabel("₹ 0");
+
+        lblExtra.setHorizontalAlignment(JLabel.RIGHT);
+
+        lblExtra.setBounds(320,410,120,25);
+
+        rightPanel.add(lblExtra);
+
+        JLabel gstLbl = new JLabel("GST (18%)");
+
+        gstLbl.setBounds(40,450,150,25);
+
+        rightPanel.add(gstLbl);
+
+        lblGST = new JLabel("₹ 0");
+
+        lblGST.setHorizontalAlignment(JLabel.RIGHT);
+
+        lblGST.setBounds(320,450,120,25);
+
+        rightPanel.add(lblGST);
+
+        JSeparator sp = new JSeparator();
+
+        sp.setBounds(30,490,420,10);
+
+        rightPanel.add(sp);
+
+        JLabel totalLbl = new JLabel("Grand Total");
+
+        totalLbl.setFont(new Font("Segoe UI",Font.BOLD,18));
+
+        totalLbl.setBounds(40,510,180,30);
+
+        rightPanel.add(totalLbl);
+
+        lblGrandTotal = new JLabel("₹ 0");
+
+        lblGrandTotal.setHorizontalAlignment(JLabel.RIGHT);
+
+        lblGrandTotal.setFont(new Font("Segoe UI",Font.BOLD,20));
+
+        lblGrandTotal.setForeground(new Color(39,174,96));
+
+        lblGrandTotal.setBounds(250,510,180,30);
+
+        rightPanel.add(lblGrandTotal);
+
+        // ================= BUTTONS =================
+
+        btnCalculate = new JButton("Calculate Price");
+
+        btnCalculate.setBounds(40,550,160,40);
+
+        btnCalculate.setBackground(new Color(52,152,219));
+
+        btnCalculate.setForeground(Color.WHITE);
+
+        btnCalculate.setFocusPainted(false);
+
+        btnCalculate.addActionListener(this);
+
+        rightPanel.add(btnCalculate);
+
+        btnBook = new JButton("Book Now");
+
+        btnBook.setBounds(210,550,120,40);
+
+        btnBook.setBackground(new Color(46,204,113));
+
+        btnBook.setForeground(Color.WHITE);
+
+        btnBook.setFocusPainted(false);
+
+        btnBook.addActionListener(this);
+
+        rightPanel.add(btnBook);
+
+        btnBack = new JButton("Back");
+
+        btnBack.setBounds(340,550,100,40);
+
+        btnBack.setBackground(new Color(231,76,60));
+
+        btnBack.setForeground(Color.WHITE);
+
+        btnBack.setFocusPainted(false);
+
+        btnBack.addActionListener(this);
+
+        rightPanel.add(btnBack);
+
+        // ================= LOAD CUSTOMER =================
+
         try{
+
             Conn c = new Conn();
+
+            ResultSet rs = c.s.executeQuery(
+                    "select * from customer where username='"+username+"'");
+
+            if(rs.next()){
+
+                lblUsernameValue.setText(rs.getString("username"));
+                lblIdValue.setText(rs.getString("id"));
+                lblNumberValue.setText(rs.getString("number"));
+                lblPhoneValue.setText(rs.getString("phone"));
+
+            }
+
+        }catch(Exception e){
+
+            e.printStackTrace();
+
+        }
+
+        // ================= LOAD HOTELS =================
+
+        try{
+
+            Conn c = new Conn();
+
             ResultSet rs = c.s.executeQuery("select * from hotel");
-            while(rs.next())
-            {
-                chotel.add(rs.getString("name"));
+
+            while(rs.next()){
+
+                cbHotel.addItem(rs.getString("name"));
+
             }
-        }
-        catch(Exception e)
-        {
+
+        }catch(Exception e){
+
             e.printStackTrace();
+
         }
-        
-        
-        
-        JLabel lblperson = new JLabel("Total persons");
-        lblperson.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblperson.setBounds(40,150,150,25);
-        add(lblperson);
-        
-        tfpersons = new JTextField();
-        tfpersons.setBounds(250, 150, 200, 25);
-        add(tfpersons);
-        
-        JLabel lbldays = new JLabel("No. of days");
-        lbldays.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lbldays.setBounds(40,190,150,25);
-        add(lbldays);
-        
-        tfdays = new JTextField();
-        tfdays.setBounds(250, 190, 200, 25);
-        add(tfdays);
-        
-        JLabel lblac = new JLabel("AC/NON-AC");
-        lblac.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblac.setBounds(40,230,150,25);
-        add(lblac);
-        
-        cac = new Choice();
-        cac.add("AC");
-        cac.add("Non-AC");
-        cac.setBounds(250, 230, 200, 20);
-        add(cac);
-        
-        JLabel lblfood = new JLabel("Food Included?");
-        lblfood.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblfood.setBounds(40,270,150,25);
-        add(lblfood);
-        
-        cfood = new Choice();
-        cfood.add("Yes");
-        cfood.add("No");
-        cfood.setBounds(250, 270, 200, 20);
-        add(cfood);
-        
-        
-        
-        JLabel lblid = new JLabel("ID");
-        lblid.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblid.setBounds(40,310,150,25);
-        add(lblid);
-        
-        
-        labelid = new JLabel();
-        labelid.setBounds(250,310,200,25);
-        add(labelid);
-        
-        
-        JLabel lblnumber = new JLabel("Number");
-        lblnumber.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblnumber.setBounds(40,340,150,25);
-        add(lblnumber);
-        
-        labelnumber = new JLabel();
-        labelnumber.setBounds(250,340,150,25);
-        add(labelnumber);
-        
-        JLabel lblphone = new JLabel("Phone");
-        lblphone.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblphone.setBounds(40,380,150,25);
-        add(lblphone);
-        
-        
-        labelphone = new JLabel();
-        labelphone.setBounds(250,380,200,25);
-        add(labelphone);
-        
-        
-        JLabel lbltotal = new JLabel("Total Price");
-        lbltotal.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lbltotal.setBounds(40,420,150,25);
-        add(lbltotal);
-        
-        labelprice = new JLabel();
-        labelprice.setBounds(250,420,150,25);
-        add(labelprice);
-        
-        
-        try{
-            Conn c = new Conn();
-            String Query = "Select * from customer where username = '"+username+"'";
-            ResultSet rs = c.s.executeQuery(Query);
-            while(rs.next())
-            {
-                labelusername.setText(rs.getString("username"));
-                labelid.setText(rs.getString("id"));
-                labelnumber.setText(rs.getString("number"));
-                
-                labelphone.setText(rs.getString("phone"));
-               
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        
-        
-        checkprice = new JButton("Check Price");
-        checkprice.setBounds(60,470,120,25);
-        checkprice.addActionListener(this);
-        checkprice.setBackground(Color.BLACK);
-        checkprice.setForeground(Color.WHITE);
-        checkprice.setBorder(BorderFactory.createEmptyBorder());
-        add(checkprice);
-        
-        
-        bookhotel = new JButton("book Hotel");
-        bookhotel.setBounds(200,470,120,25);
-        bookhotel.addActionListener(this);
-        bookhotel.setBackground(Color.BLACK);
-        bookhotel.setForeground(Color.WHITE);
-        bookhotel.setBorder(BorderFactory.createEmptyBorder());
-        add(bookhotel);
-        
-        back = new JButton("Back");
-        back.setBounds(340,470,120,25);
-        back.addActionListener(this);
-        back.setBackground(Color.BLACK);
-        back.setForeground(Color.WHITE);
-        back.setBorder(BorderFactory.createEmptyBorder());
-        add(back);
-        
-        
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/book.jpg"));
-        Image i2 = i1.getImage().getScaledInstance(600, 400, Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
-        JLabel image = new JLabel(i3);
-        image.setBounds(550 ,50 ,600, 400);
-        add(image);
-        
+
         setVisible(true);
-        
+
     }
-    public void actionPerformed(ActionEvent ae)
-    {
-        if(ae.getSource()==checkprice)
-        {
-            try
-            {
+
+    // ================= HELPER METHODS =================
+
+    public void addLabel(JPanel panel,String text,int y){
+
+        JLabel l = new JLabel(text);
+
+        l.setBounds(25,y,130,25);
+
+        l.setFont(new Font("Segoe UI",Font.BOLD,15));
+
+        panel.add(l);
+
+    }
+
+    public void addValue(JPanel panel,JLabel value,int y){
+
+        value.setBounds(180,y,180,25);
+
+        value.setFont(new Font("Segoe UI",Font.PLAIN,15));
+
+        panel.add(value);
+
+    }
+        @Override
+    public void actionPerformed(ActionEvent ae) {
+
+        // ================= CALCULATE PRICE =================
+
+        if (ae.getSource() == btnCalculate) {
+
+            try {
+
+                int persons = Integer.parseInt(tfPersons.getText());
+                int days = Integer.parseInt(tfDays.getText());
+
                 Conn c = new Conn();
-                ResultSet rs = c.s.executeQuery("select * from hotel where name = '"+chotel.getSelectedItem()+"'");
-                
-                while(rs.next())
-                {
+
+                ResultSet rs = c.s.executeQuery(
+                        "select * from hotel where name='" +
+                                cbHotel.getSelectedItem() + "'");
+
+                if (rs.next()) {
+
                     int cost = Integer.parseInt(rs.getString("costperperson"));
-                    int ac = Integer.parseInt(rs.getString("acroom"));
-                    int food = Integer.parseInt(rs.getString("foodincluded"));
-                    
-                    int persons = Integer.parseInt(tfpersons.getText());
-                    int days = Integer.parseInt(tfdays.getText());
-                    
-                    String acselected = cac.getSelectedItem();
-                    String foodselected = cfood.getSelectedItem();
-                    
-                    if(persons*days> 0)
-                    {
-                        int total=0;
-                        if(acselected.equals("AC"))
-                        {
-                            total = total + ac;
-                        }
-                        else
-                        {
-                            total = total + 0;
-                        }
-                        
-                        if(foodselected.equals("Yes"))
-                        {
-                            total = total + food;
-                        }
-                        else
-                        {
-                            total = total + 0;
-                        }
-                        total = total+cost;
-                        total = total*days*persons;
-                        labelprice.setText("RS: "+total);
-                        
+                    int acCharge = Integer.parseInt(rs.getString("acroom"));
+                    int foodCharge = Integer.parseInt(rs.getString("foodincluded"));
+
+                    roomCost = cost * persons * days;
+
+                    int extras = 0;
+
+                    // AC Charges
+                    if (cbAC.getSelectedItem().equals("AC")) {
+                        extras += acCharge * persons * days;
                     }
-                    else
-                    {
-                        JOptionPane.showMessageDialog(null, "please Enter valid number");
+
+                    // Food Charges
+                    if (cbFood.getSelectedItem().equals("Included")) {
+                        extras += foodCharge * persons * days;
                     }
+
+                    // Extra Services
+                    if (wifi.isSelected())
+                        extras += 300;
+
+                    if (swimming.isSelected())
+                        extras += 500;
+
+                    if (laundry.isSelected())
+                        extras += 400;
+
+                    if (pickup.isSelected())
+                        extras += 800;
+
+                    if (parking.isSelected())
+                        extras += 200;
+
+                    int subtotal = roomCost + extras;
+
+                    int gst = (int) (subtotal * 0.18);
+
+                    totalAmount = subtotal + gst;
+
+                    lblRoomPrice.setText("₹ " + roomCost);
+                    lblExtra.setText("₹ " + extras);
+                    lblGST.setText("₹ " + gst);
+                    lblGrandTotal.setText("₹ " + totalAmount);
+
                 }
-            
+
+            } catch (Exception e) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Please enter valid values.");
+
             }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
+
         }
-        else if(ae.getSource()==bookhotel)
-        {
-            try
-            {
-             Conn c = new Conn();
-             c.s.executeUpdate("insert into bookhotel values ('"+labelusername.getText() +"','"+chotel.getSelectedItem() +"','"+ tfpersons.getText()+"','"+tfdays.getText()+"','"+cac.getSelectedItem()+"','"+cfood.getSelectedItem()+"','"+ labelid.getText()+"','" +labelnumber.getText() +"','"+labelphone.getText() +"','" + labelprice.getText()+"')");
-             
-             JOptionPane.showMessageDialog(null, "hotel booked successfully");
-             setVisible(false);
+
+        // ================= BOOK HOTEL =================
+
+        else if (ae.getSource() == btnBook) {
+
+            try {
+
+                Conn c = new Conn();
+
+                String query =
+                        "insert into bookhotel values('" +
+
+                                lblUsernameValue.getText() + "','" +
+
+                                cbHotel.getSelectedItem() + "','" +
+
+                                tfPersons.getText() + "','" +
+
+                                tfDays.getText() + "','" +
+
+                                cbAC.getSelectedItem() + "','" +
+
+                                cbFood.getSelectedItem() + "','" +
+
+                                lblIdValue.getText() + "','" +
+
+                                lblNumberValue.getText() + "','" +
+
+                                lblPhoneValue.getText() + "','" +
+
+                                "₹ " + totalAmount + "')";
+
+                c.s.executeUpdate(query);
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Hotel Booked Successfully!");
+
+                setVisible(false);
+
             }
-            catch(Exception e)
-            {
+
+            catch(Exception e){
+
                 e.printStackTrace();
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Booking Failed");
+
             }
+
         }
-        else
-        {
+                // ================= BACK BUTTON =================
+
+        else if (ae.getSource() == btnBack) {
+
             setVisible(false);
+
         }
+
     }
-    
-    public static void main(String[] arg)
-    {
-        new BookHotel("Rambo");
-        
+
+    // ================= MAIN METHOD =================
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+
+                new BookHotel("Rambo");
+
+            }
+
+        });
+
     }
+
 }

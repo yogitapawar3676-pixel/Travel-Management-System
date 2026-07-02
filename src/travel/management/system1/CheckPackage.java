@@ -1,137 +1,196 @@
-
 package travel.management.system1;
 
-import javax.swing.*;
 import java.awt.*;
-import java.sql.*;
-public class CheckPackage extends JFrame {
-    
-    CheckPackage()
-    {
-       
-        setBounds(450,200,900,600);
-        
-//        array is created for making data in tap dynamic
-        String[] package1 = {"GOLD PACKAGE","6 Days and 7 Nights","Airport Assistance !!!","Half Day City Tour !!!","Daily Buffet free !!!","Welcome Drinks on Arrival !!!","All Forts and hill station Coverd in maharastra !!!","Marathi || Hindi || English speaking Guides !!!","BOOK NOW","Summer Spacial","RS 12000/-","package1.jpg"};
-        String[] package2 = {"SILVER PACKAGE","4 Days and 5 Nights","TOll free entry !!!","Half Day City Tour !!!","Daily Dinner free!!!","Welcome Drinks on Arrival !!!","All Forts Coverd in maharastra !!!","Marathi || Hindi || English speaking Guides !!!","BOOK NOW","Summer Spacial","RS 9000/-","package2.jpg"};
-        String[] package3 = {"BRONZE PACKAGE","2 Days and 3 Nights"," Entrance Free tickets !!!","Free indoore Games !!!","Daily Breakfast free !!!","Welcome Drinks on Arrival !!!","All hill station Coverd in maharastra !!!","Marathi || Hindi || English speaking Guides !!!","BOOK NOW","Summer Spacial","RS 6000/-","package3.jpg"};
-        
+import java.awt.event.*;
+import javax.swing.*;
 
-        
-//        tabbed pane class is used for create a tab on the fram
-        JTabbedPane tab = new JTabbedPane();
-        JPanel p1 =createPackage(package1);
-        
-        tab.add("Package 1", p1);
-        
-        JPanel p2 =createPackage(package2);
-        tab.add("Package 2", p2);
-        
-        JPanel p3 =createPackage(package3);
-        tab.add("Package 3", p3);
-        add(tab);
+public class CheckPackage extends JFrame implements ActionListener {
 
+    JButton bronzeBtn, silverBtn, goldBtn;
 
-       
-        
-        
+    public CheckPackage() {
+
+        setTitle("Travel Packages");
+        setSize(1400,800);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(null);
+
+        getContentPane().setBackground(new Color(245,247,252));
+
+        JLabel heading = new JLabel("EXPLORE OUR AMAZING PACKAGES");
+        heading.setFont(new Font("Segoe UI",Font.BOLD,34));
+        heading.setForeground(new Color(30,45,70));
+        heading.setBounds(350,25,700,40);
+        add(heading);
+
+        JLabel sub = new JLabel("Choose the best package for your unforgettable journey");
+        sub.setFont(new Font("Segoe UI",Font.PLAIN,18));
+        sub.setForeground(Color.GRAY);
+        sub.setBounds(430,70,520,30);
+        add(sub);
+
+        JPanel bronzeCard = createCard(
+                "BRONZE PACKAGE",
+                "images/package1.jpg",
+                "2 Days & 3 Nights",
+                "₹ 6,000",
+                new Color(255,140,0));
+
+        bronzeCard.setBounds(60,150,380,520);
+        add(bronzeCard);
+
+        bronzeBtn = (JButton) bronzeCard.getComponent(bronzeCard.getComponentCount()-1);
+
+        JPanel silverCard = createCard(
+                "SILVER PACKAGE",
+                "images/package2.jpg",
+                "3 Days & 4 Nights",
+                "₹ 8,500",
+                new Color(52,152,219));
+
+        silverCard.setBounds(500,150,380,520);
+        add(silverCard);
+
+        silverBtn = (JButton) silverCard.getComponent(silverCard.getComponentCount()-1);
+
+        JPanel goldCard = createCard(
+                "GOLD PACKAGE",
+                "images/package3.jpg",
+                "4 Days & 5 Nights",
+                "₹ 12,000",
+                new Color(241,196,15));
+
+        goldCard.setBounds(940,150,380,520);
+        add(goldCard);
+
+        goldBtn = (JButton) goldCard.getComponent(goldCard.getComponentCount()-1);
+
         setVisible(true);
-            
     }
-    
-    public JPanel createPackage(String[] pack)
-    {
-         
-        JPanel p1 = new JPanel();
-        p1.setLayout(null);
-        p1.setBackground(Color.white);
-        
-        JLabel l1 = new JLabel(pack[0]);
-        l1.setBounds(50, 5,300 , 30);
-        l1.setForeground(Color.yellow);
-        l1.setFont(new Font("Tahoma",Font.BOLD,30));
-        p1.add(l1);
-        
-        JLabel l2 = new JLabel(pack[1] );
-        l2.setBounds(30, 60,300 , 30);
-        l2.setForeground(Color.black);
-        l2.setFont(new Font("Tahoma",Font.PLAIN,20));
-        p1.add(l2);
-        
-        JLabel l3 = new JLabel(pack[2]);
-        l3.setBounds(30, 110,300 , 30);
-        l3.setForeground(Color.black);
-        l3.setFont(new Font("Tahoma",Font.PLAIN,20));
-        p1.add(l3);
-        
-        
-        JLabel l4 = new JLabel(pack[3] );
-        l4.setBounds(30, 160,300 , 30);
-        l4.setForeground(Color.black);
-        l4.setFont(new Font("Tahoma",Font.PLAIN,20));
-        p1.add(l4);
-        
-        JLabel l5 = new JLabel(pack[4] );
-        l5.setBounds(30, 210,300 , 30);
-        l5.setForeground(Color.black);
-        l5.setFont(new Font("Tahoma",Font.PLAIN,20));
-        p1.add(l5);
-        
-        JLabel l6 = new JLabel(pack[5] );
-        l6.setBounds(30, 260,300 , 30);
-        l6.setForeground(Color.black);
-        l6.setFont(new Font("Tahoma",Font.PLAIN,20));
-        p1.add(l6);
-        
-        JLabel l7 = new JLabel(pack[6]);
-        l7.setBounds(30, 320,450 , 30);
-        l7.setForeground(Color.black);
-        l7.setFont(new Font("Tahoma",Font.PLAIN,20));
-        p1.add(l7);
-        
-        
-        JLabel l8 = new JLabel(pack[7] );
-        l8.setBounds(30, 370,450 , 30);
-        l8.setForeground(Color.black);
-        l8.setFont(new Font("Tahoma",Font.PLAIN,20));
-        p1.add(l8);
-        
-        JLabel l9 = new JLabel(pack[8] );
-        l9.setBounds(60, 430,450 , 30);
-        l9.setForeground(Color.black);
-        l9.setFont(new Font("Tahoma",Font.BOLD,25));
-        p1.add(l9);
-        
-        JLabel l10 = new JLabel(pack[9] );
-        l10.setBounds(80, 480,450 , 30);
-        l10.setForeground(Color.black);
-        l10.setFont(new Font("Tahoma",Font.BOLD,25));
-        p1.add(l10);
-        
-        
-        JLabel l11 = new JLabel(pack[10] );
-        l11.setBounds(550, 400,450 , 30);
-        l11.setForeground(Color.black);
-        l11.setFont(new Font("Tahoma",Font.BOLD,25));
-        p1.add(l11);
-        
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/"+pack[11]));
-        Image i2 = i1.getImage().getScaledInstance(500, 300, Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
-        JLabel l12 = new JLabel(i3);
-        l12.setBounds(350, 20, 500, 300);
-        p1.add(l12);
-        
-        return p1;
-        
+        // ================= CREATE PACKAGE CARD =================
+
+    private JPanel createCard(String title,
+                              String imagePath,
+                              String days,
+                              String price,
+                              Color color) {
+
+        JPanel card = new JPanel();
+        card.setLayout(null);
+        card.setBackground(Color.WHITE);
+        card.setBorder(BorderFactory.createLineBorder(new Color(220,220,220),2));
+
+        // Package Title
+        JLabel lblTitle = new JLabel(title);
+        lblTitle.setBounds(20,15,300,30);
+        lblTitle.setFont(new Font("Segoe UI",Font.BOLD,22));
+        lblTitle.setForeground(color);
+        card.add(lblTitle);
+
+        // Package Image
+        ImageIcon icon = null;
+
+        try{
+            java.net.URL url = ClassLoader.getSystemResource(imagePath);
+
+            if(url != null){
+                icon = new ImageIcon(url);
+            }else{
+                icon = new ImageIcon(imagePath);
+            }
+
+        }catch(Exception e){
+            icon = new ImageIcon(imagePath);
+        }
+
+        Image img = icon.getImage().getScaledInstance(330,180,Image.SCALE_SMOOTH);
+
+        JLabel image = new JLabel(new ImageIcon(img));
+        image.setBounds(20,55,330,180);
+        card.add(image);
+
+        // Duration
+        JLabel duration = new JLabel(days);
+        duration.setBounds(25,250,250,25);
+        duration.setFont(new Font("Segoe UI",Font.BOLD,18));
+        card.add(duration);
+
+        // Features
+        JTextArea details = new JTextArea(
+                "✓ Deluxe Hotel Stay\n"
+              + "✓ Daily Breakfast\n"
+              + "✓ Free Sightseeing\n"
+              + "✓ Travel Guide\n"
+              + "✓ Pickup & Drop\n"
+              + "✓ Free WiFi");
+        details.setBounds(25,285,300,110);
+        details.setFont(new Font("Segoe UI",Font.PLAIN,15));
+        details.setEditable(false);
+        details.setOpaque(false);
+        card.add(details);
+
+        // Price
+        JLabel lblPrice = new JLabel(price);
+        lblPrice.setBounds(120,405,180,35);
+        lblPrice.setFont(new Font("Segoe UI",Font.BOLD,28));
+        lblPrice.setForeground(color);
+        card.add(lblPrice);
+
+        // Button
+        JButton btn = new JButton("BOOK NOW");
+        btn.setBounds(90,455,180,40);
+        btn.setBackground(color);
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+        btn.setFont(new Font("Segoe UI",Font.BOLD,16));
+        btn.addActionListener(this);
+        card.add(btn);
+
+        return card;
     }
-    
-    
-    
-    
-    public static void main(String[] arg)
-    {
-        new CheckPackage();
+        // ================= BUTTON ACTION =================
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+
+        if (ae.getSource() == bronzeBtn) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Bronze Package Selected!\nPrice : ₹6,000");
+
+            // Uncomment if you want to open booking page
+            // new BookPackage(username);
+
+        } else if (ae.getSource() == silverBtn) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Silver Package Selected!\nPrice : ₹8,500");
+
+            // new BookPackage(username);
+
+        } else if (ae.getSource() == goldBtn) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Gold Package Selected!\nPrice : ₹12,000");
+
+            // new BookPackage(username);
+
+        }
+
     }
-    
+
+    // ================= MAIN =================
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(() -> {
+            new CheckPackage();
+        });
+
+    }
+
 }

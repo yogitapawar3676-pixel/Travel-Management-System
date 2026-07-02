@@ -1,215 +1,216 @@
-
 package travel.management.system1;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.ResultSet;
-public class BookPackage extends JFrame implements ActionListener{
-    
+import javax.swing.*;
+
+public class BookPackage extends JFrame implements ActionListener {
+
     Choice cpackage;
     JTextField tfpersons;
+
     String username;
-    JLabel labelusername,labelid , labelnumber,labelphone,labelprice;
+
+    JLabel labelusername, labelid, labelnumber, labelphone, labelprice;
+
     JButton checkprice, bookpackage, back;
-    BookPackage(String username)
-    {
+
+    BookPackage(String username) {
+
         this.username = username;
-        
-        setBounds(350,200,1100,500);
+
+        setTitle("Book Package");
+        setSize(1050, 650);
+        setLocationRelativeTo(null);
         setLayout(null);
-        getContentPane().setBackground(Color.WHITE);
-        
-        JLabel text = new JLabel("BOOK PACKAGE");
-        text.setBounds(100, 10, 200, 30);
-        text.setFont(new Font("Tahoma",Font.BOLD,20));
-        text.setForeground(Color.BLACK);
-        add(text);
- 
-        JLabel lblusername = new JLabel("Username");
-        lblusername.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblusername.setBounds(40,70,100,20);
-        add(lblusername);
-        
-        
+
+        getContentPane().setBackground(new Color(245, 247, 250));
+
+        // HEADER
+        JPanel header = new JPanel();
+        header.setBounds(0, 0, 1050, 80);
+        header.setBackground(new Color(25, 42, 86));
+        header.setLayout(null);
+
+        JLabel title = new JLabel("BOOK PACKAGE");
+        title.setBounds(380, 20, 400, 40);
+        title.setForeground(Color.WHITE);
+        title.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        header.add(title);
+
+        add(header);
+
+        // CARD
+        JPanel card = new JPanel();
+        card.setBounds(70, 120, 550, 420);
+        card.setBackground(Color.WHITE);
+        card.setLayout(null);
+        add(card);
+
+        // USERNAME
         labelusername = new JLabel();
-        labelusername.setFont(new Font("Tahoma",Font.PLAIN,16));
-        labelusername.setBounds(250,70,200,20);
-        add(labelusername);
-        
-        
-        JLabel lblpackage = new JLabel("Select Package");
-        lblpackage.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblpackage.setBounds(40,110,150,20);
-        add(lblpackage);
-        
-        
+        addField(card, "Username", labelusername, 40);
+
+        // PACKAGE
+        JLabel packLabel = new JLabel("Select Package");
+        packLabel.setBounds(40, 90, 150, 30);
+        packLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        card.add(packLabel);
+
         cpackage = new Choice();
         cpackage.add("Gold Package");
-        cpackage.add("Selver Package");
+        cpackage.add("Silver Package");
         cpackage.add("Bronze Package");
-        cpackage.setBounds(250, 110, 200, 20);
-        add(cpackage);
-        
-        
-        
-        JLabel lblperson = new JLabel("Total persons");
-        lblperson.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblperson.setBounds(40,150,150,25);
-        add(lblperson);
-        
+        cpackage.setBounds(220, 90, 220, 30);
+        card.add(cpackage);
+
+        // PERSONS
         tfpersons = new JTextField("1");
-        tfpersons.setBounds(250, 150, 200, 25);
-        add(tfpersons);
-        
-        
-        
-        JLabel lblid = new JLabel("ID");
-        lblid.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblid.setBounds(40,190,150,25);
-        add(lblid);
-        
-        
+        addField(card, "Total Persons", tfpersons, 140);
+
+        // ID
         labelid = new JLabel();
-        labelid.setBounds(250,190,200,25);
-        add(labelid);
-        
-        
-        JLabel lblnumber = new JLabel("Number");
-        lblnumber.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblnumber.setBounds(40,230,150,25);
-        add(lblnumber);
-        
+        addField(card, "ID", labelid, 190);
+
+        // NUMBER
         labelnumber = new JLabel();
-        labelnumber.setBounds(250,230,150,25);
-        add(labelnumber);
-        
-        JLabel lblphone = new JLabel("Phone");
-        lblphone.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lblphone.setBounds(40,270,150,25);
-        add(lblphone);
-        
-        
+        addField(card, "Number", labelnumber, 240);
+
+        // PHONE
         labelphone = new JLabel();
-        labelphone.setBounds(250,270,200,25);
-        add(labelphone);
-        
-        
-        JLabel lbltotal = new JLabel("Total Price");
-        lbltotal.setFont(new Font("Tahoma",Font.PLAIN,16));
-        lbltotal.setBounds(40,310,150,25);
-        add(lbltotal);
-        
+        addField(card, "Phone", labelphone, 290);
+
+        // PRICE
         labelprice = new JLabel();
-        labelprice.setBounds(250,310,150,25);
-        add(labelprice);
-        
-        
-        try{
-            Conn c = new Conn();
-            String Query = "Select * from customer where username = '"+username+"'";
-            ResultSet rs = c.s.executeQuery(Query);
-            while(rs.next())
-            {
-                labelusername.setText(rs.getString("username"));
-                labelid.setText(rs.getString("id"));
-                labelnumber.setText(rs.getString("number"));
-                
-                labelphone.setText(rs.getString("phone"));
-               
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        
-        
-        checkprice = new JButton("Check Price");
-        checkprice.setBounds(60,380,120,25);
+        addField(card, "Total Price", labelprice, 340);
+
+        // BUTTONS
+        checkprice = new JButton("CHECK PRICE");
+        checkprice.setBounds(90, 570, 150, 40);
+        styleButton(checkprice);
         checkprice.addActionListener(this);
-        checkprice.setBackground(Color.BLACK);
-        checkprice.setForeground(Color.WHITE);
-        checkprice.setBorder(BorderFactory.createEmptyBorder());
         add(checkprice);
-        
-        
-        bookpackage = new JButton("book package");
-        bookpackage.setBounds(200,380,120,25);
+
+        bookpackage = new JButton("BOOK");
+        bookpackage.setBounds(270, 570, 150, 40);
+        styleButton(bookpackage);
         bookpackage.addActionListener(this);
-        bookpackage.setBackground(Color.BLACK);
-        bookpackage.setForeground(Color.WHITE);
-        bookpackage.setBorder(BorderFactory.createEmptyBorder());
         add(bookpackage);
-        
-        back = new JButton("Back");
-        back.setBounds(340,380,120,25);
+
+        back = new JButton("BACK");
+        back.setBounds(450, 570, 120, 40);
+        styleButton(back);
         back.addActionListener(this);
-        back.setBackground(Color.BLACK);
-        back.setForeground(Color.WHITE);
-        back.setBorder(BorderFactory.createEmptyBorder());
         add(back);
-        
-        
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/bookpackage.jpg"));
-        Image i2 = i1.getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
-        JLabel image = new JLabel(i3);
-        image.setBounds(550 ,50 ,500, 300);
-        add(image);
-        
-        setVisible(true);
-        
-    }
-    public void actionPerformed(ActionEvent ae)
-    {
-        if(ae.getSource()==checkprice)
-        {
-            String pack = cpackage.getSelectedItem();
-            int cost=0;
-            if(pack.equals("Gold Package"))
-            {
-                cost+= 12000;
-            }
-            else if(pack.equals("Selver Package"))
-            {
-                cost+=9000;
-            }
-            else
-            {
-                cost+=6000;
-            }
-            
-            int persons = Integer.parseInt(tfpersons.getText());
-            cost *= persons;
-            
-            labelprice.setText("RS: "+cost);
-            
+
+        // IMAGE (IMPORTANT - YOUR ORIGINAL IMAGE KEPT)
+        java.net.URL url = getClass().getClassLoader().getResource("icons/bookpackage.jpg");
+
+        if(url != null) {
+            ImageIcon i1 = new ImageIcon(url);
+            Image i2 = i1.getImage().getScaledInstance(350, 350, Image.SCALE_SMOOTH);
+            JLabel image = new JLabel(new ImageIcon(i2));
+            image.setBounds(680, 150, 350, 350);
+            add(image);
+        } else {
+            System.out.println("Image not found: bookpackage.jpg");
         }
-        else if(ae.getSource()==bookpackage)
-        {
-            try
-            {
-             Conn c = new Conn();
-             c.s.executeUpdate("insert into bookpackage values ('"+labelusername.getText() +"','"+cpackage.getSelectedItem() +"','"+ tfpersons.getText()+"','"+ labelid.getText()+"','" +labelnumber.getText() +"','"+labelphone.getText() +"','" + labelprice.getText()+"')");
-             
-             JOptionPane.showMessageDialog(null, "Package booked successfully");
-             setVisible(false);
-            }
-            catch(Exception e)
-            {
+
+        // DATABASE
+        try {
+    Conn c = new Conn();
+
+    ResultSet rs = c.s.executeQuery(
+        "select * from customer where username='" + username + "'"
+    );
+
+    if(rs.next()) {
+        labelusername.setText(rs.getString("username"));
+        labelid.setText(rs.getString("id"));
+        labelnumber.setText(rs.getString("number"));
+        labelphone.setText(rs.getString("phone"));
+    } else {
+        System.out.println("No customer found for: " + username);
+    }
+
+} catch(Exception e) {
+    e.printStackTrace();
+    JOptionPane.showMessageDialog(this, "BookPackage DB Error");
+}
+
+        setVisible(true);
+    }
+
+    // FIXED METHOD (THIS SOLVES YOUR ERROR)
+    private void addField(JPanel panel, String labelText, JComponent comp, int y) {
+
+    JLabel label = new JLabel(labelText);
+
+    label.setBounds(40, y, 150, 30);
+    label.setFont(new Font("Segoe UI", Font.BOLD, 14));
+    panel.add(label);
+
+    comp.setBounds(220, y, 220, 30);
+    comp.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+    panel.add(comp);
+}
+
+    private void styleButton(JButton b) {
+        b.setBackground(new Color(25, 118, 210));
+        b.setForeground(Color.WHITE);
+        b.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        b.setFocusPainted(false);
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+
+        if (ae.getSource() == checkprice) {
+
+            int cost = 0;
+
+            String pack = cpackage.getSelectedItem();
+
+            if (pack.equals("Gold Package")) cost = 12000;
+            else if (pack.equals("Silver Package")) cost = 9000;
+            else cost = 6000;
+
+            int persons = Integer.parseInt(tfpersons.getText());
+            cost = cost * persons;
+
+            labelprice.setText("₹ " + cost);
+        }
+
+        else if (ae.getSource() == bookpackage) {
+
+            try {
+                Conn c = new Conn();
+
+                c.s.executeUpdate(
+                        "insert into bookpackage values('"
+                                + labelusername.getText() + "','"
+                                + cpackage.getSelectedItem() + "','"
+                                + tfpersons.getText() + "','"
+                                + labelid.getText() + "','"
+                                + labelnumber.getText() + "','"
+                                + labelphone.getText() + "','"
+                                + labelprice.getText() + "')"
+                );
+
+                JOptionPane.showMessageDialog(null, "Package Booked Successfully");
+                setVisible(false);
+
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        else
-        {
+
+        else {
             setVisible(false);
         }
     }
-    
-    public static void main(String[] arg)
-    {
+
+    public static void main(String[] args) {
         new BookPackage("Rambo");
-        
     }
 }

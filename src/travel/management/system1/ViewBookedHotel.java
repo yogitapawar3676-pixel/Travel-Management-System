@@ -1,10 +1,10 @@
 
 package travel.management.system1;
 
-import javax.swing.*;
 import java.awt.*;
-import java.sql.*;
 import java.awt.event.*;
+import java.sql.*;
+import javax.swing.*;
 
 
 public class ViewBookedHotel extends JFrame implements ActionListener{
@@ -129,38 +129,47 @@ public class ViewBookedHotel extends JFrame implements ActionListener{
         
         
         
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/bookedDetails.jpg"));
-        Image i2 = i1.getImage().getScaledInstance(500, 400, Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
-        JLabel image = new JLabel(i3);
-        image.setBounds(450,20 ,500, 400);
-        add(image);
+        java.net.URL url = getClass().getClassLoader().getResource("icons/bookedDetails.jpg");
+
+if(url != null) {
+    ImageIcon i1 = new ImageIcon(url);
+    Image i2 = i1.getImage().getScaledInstance(500, 400, Image.SCALE_SMOOTH);
+    JLabel image = new JLabel(new ImageIcon(i2));
+    image.setBounds(450,20,500,400);
+    add(image);
+} else {
+    System.out.println("Image missing: bookedDetails.jpg");
+}
         
         
-        try{
-            Conn c = new Conn();
-            String Query = "Select * from bookhotel where username = '"+username+"'";
-            ResultSet rs = c.s.executeQuery(Query);
-            while(rs.next())
-            {
-                labelusername.setText(rs.getString("username"));
-                labelid.setText(rs.getString("id"));
-                labelnumber.setText(rs.getString("number"));
-                labelpackage.setText(rs.getString("hotel"));
-                labelprice.setText(rs.getString("price"));
-                labelfood.setText(rs.getString("food"));
-                labelac.setText(rs.getString("ac"));
-                labeldays.setText(rs.getString("days"));
-               
-                labelphone.setText(rs.getString("phone"));
-                labelpersons.setText(rs.getString("persons"));
-                
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
+        try {
+
+    Conn c = new Conn();
+
+    String query = "Select * from bookhotel where username='"+username+"'";
+    ResultSet rs = c.s.executeQuery(query);
+
+    if(rs.next()) {
+
+        labelusername.setText(rs.getString(1));
+        labelpackage.setText(rs.getString(2));
+        labelpersons.setText(rs.getString(3));
+        labeldays.setText(rs.getString(4));
+        labelac.setText(rs.getString(5));
+        labelfood.setText(rs.getString(6));
+        labelid.setText(rs.getString(7));
+        labelnumber.setText(rs.getString(8));
+        labelphone.setText(rs.getString(9));
+        labelprice.setText(rs.getString(10));
+
+    } else {
+        System.out.println("No hotel booking found");
+    }
+
+} catch(Exception e) {
+    e.printStackTrace();
+    JOptionPane.showMessageDialog(this, "Error loading booked hotel");
+}
         
         
         setVisible(true);
