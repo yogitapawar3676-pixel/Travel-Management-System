@@ -16,7 +16,12 @@ public class Dashboard extends JFrame implements ActionListener {
             deletePersonDetails, checkPackages, bookPackages,
             viewPackages, viewHotels, searchHotel,
             destinations, bookHotels, viewBookedHotels,
-            payments, invoice, abouts, exits;
+            payments,  abouts, exits,
+
+            btnCustomer,
+            btnPackage,
+            btnHotel,
+            btnPayment;
 
     JPanel contentPanel;
     JPanel dashboardPanel;
@@ -98,7 +103,6 @@ public class Dashboard extends JFrame implements ActionListener {
 
         destinations = createMenuButton("🌍 Destinations");
         payments = createMenuButton("💳 Payments");
-        invoice = createMenuButton("🧾 Invoice");
 
         abouts = createMenuButton("ℹ About");
         exits = createMenuButton("🚪 Exit");
@@ -125,7 +129,6 @@ public class Dashboard extends JFrame implements ActionListener {
 
         menuPanel.add(destinations);
         menuPanel.add(payments);
-        menuPanel.add(invoice);
 
         menuPanel.add(Box.createVerticalStrut(15));
 
@@ -280,17 +283,21 @@ public class Dashboard extends JFrame implements ActionListener {
 
         quickPanel.add(quickTitle);
 
-        JButton btnCustomer = createQuickButton("➕ Add Customer");
+        btnCustomer = createQuickButton("➕ Add Customer");
         btnCustomer.setBounds(35,60,220,40);
+        btnCustomer.addActionListener(this);
 
-        JButton btnPackage = createQuickButton("📦 Book Package");
+        btnPackage = createQuickButton("📦 Book Package");
         btnPackage.setBounds(35,115,220,40);
+        btnPackage.addActionListener(this);
 
-        JButton btnHotel = createQuickButton("🏨 Book Hotel");
+        btnHotel = createQuickButton("🏨 Book Hotel");
         btnHotel.setBounds(35,170,220,40);
+        btnHotel.addActionListener(this);
 
-        JButton btnPayment = createQuickButton("💳 Payment");
+        btnPayment = createQuickButton("💳 Payment");
         btnPayment.setBounds(35,225,220,40);
+        btnPayment.addActionListener(this);
 
         quickPanel.add(btnCustomer);
         quickPanel.add(btnPackage);
@@ -385,9 +392,33 @@ public class Dashboard extends JFrame implements ActionListener {
 
         try {
 
+            // ================= QUICK ACTIONS =================
+
+            if (src == btnCustomer) {
+
+                new AddCustomer(username);
+
+            }
+            else if (src == btnPackage) {
+
+                new BookPackage(username);
+
+            }
+            else if (src == btnHotel) {
+
+                new BookHotel(username);
+
+            }
+            else if (src == btnPayment) {
+
+                new Payment(username);
+
+            }
+
+
             // ================= CUSTOMER =================
 
-            if (src == addPersonDetails) {
+            else if (src == addPersonDetails) {
 
                 new AddCustomer(username);
 
@@ -451,16 +482,7 @@ public class Dashboard extends JFrame implements ActionListener {
 
                 new Payment(username);
 
-            } else if (src == invoice) {
-
-                InvoiceGenerator.generateInvoice(
-                        username,
-                        "5000",
-                        "UPI",
-                        "TXN12345"
-                );
-
-        }
+            } 
 
             // ================= OTHER =================
 
