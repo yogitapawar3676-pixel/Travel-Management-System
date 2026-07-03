@@ -3,186 +3,360 @@ package travel.management.system1;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.net.URL;
 
-public class Destinations extends JFrame implements Runnable {
+public class Destinations extends JFrame {
 
-    JLabel imageLabel;
-    JLabel placeName;
+    JPanel cardsPanel;
+    JTextField searchField;
+    JButton searchBtn;
 
-    JButton explore;
-    JButton back;
-
-    Thread thread;
-
-    int index = 0;
-
-    String images[] = {
-
-            "desti1.jpg",
-            "desti2.jpg",
-            "desti3.jpg",
-            "desti4.jpg",
-            "desti5.jpg",
-            "desti6.jpg",
-            "desti7.jpg",
-            "desti8.jpg",
-            "desti9.png",
-            "desti10.jpg"
-    };
-
-    String places[] = {
-
-            "Kaas Pathar",
+    String[] places = {
             "Mahabaleshwar",
+            "Lonavala",
             "Raigad Fort",
             "Rajgad Fort",
-            "Lonavala",
+            "Kaas Pathar",
             "Konkan",
-            "Panhala",
-            "Lake View",
             "Panchgani",
-            "Lohagad"
+            "Panhala",
+            "Lohagad",
+            "Lake View"
     };
 
-    Destinations() {
+    String[] images = {
+            "desti2.jpg",
+            "desti5.jpg",
+            "desti3.jpg",
+            "desti4.jpg",
+            "desti1.jpg",
+            "desti6.jpg",
+            "desti9.png",
+            "desti7.jpg",
+            "desti10.jpg",
+            "desti8.jpg"
+    };
+
+    public Destinations() {
 
         setTitle("Explore Destinations");
-
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
 
-        setLayout(null);
+        // ================= HEADER =================
 
-        getContentPane().setBackground(Color.BLACK);
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBackground(new Color(25,118,210));
+        topPanel.setPreferredSize(new Dimension(100,90));
 
-        // ================= IMAGE LABEL =================
+        JLabel heading = new JLabel("🌍 Explore Amazing Destinations");
+        heading.setFont(new Font("Segoe UI",Font.BOLD,32));
+        heading.setForeground(Color.WHITE);
+        heading.setBorder(BorderFactory.createEmptyBorder(20,25,20,20));
 
-        imageLabel = new JLabel();
-        imageLabel.setBounds(0, 0, 1600, 900);
-        add(imageLabel);
+        topPanel.add(heading,BorderLayout.WEST);
 
-        // ================= INFO PANEL =================
+        // ================= SEARCH PANEL =================
 
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(null);
-        infoPanel.setBackground(new Color(0, 0, 0, 160));
-        infoPanel.setBounds(0, 500, 1600, 300);
-        add(infoPanel);
+        JPanel searchPanel = new JPanel();
+        searchPanel.setOpaque(false);
+
+        searchField = new JTextField(20);
+        searchField.setFont(new Font("Segoe UI",Font.PLAIN,18));
+
+        searchBtn = new JButton("Search");
+        searchBtn.setFont(new Font("Segoe UI",Font.BOLD,15));
+        searchBtn.setBackground(new Color(255,140,0));
+        searchBtn.setForeground(Color.WHITE);
+        searchBtn.setFocusPainted(false);
+
+        searchPanel.add(searchField);
+        searchPanel.add(searchBtn);
+
+        topPanel.add(searchPanel,BorderLayout.EAST);
+
+        add(topPanel,BorderLayout.NORTH);
+
+        // ================= DESTINATION PANEL =================
+
+        cardsPanel = new JPanel();
+
+        cardsPanel.setBackground(new Color(245,245,245));
+
+        cardsPanel.setLayout(new GridLayout(0,3,25,25));
+
+        cardsPanel.setBorder(
+                BorderFactory.createEmptyBorder(25,25,25,25)
+        );
+
+        JScrollPane scroll = new JScrollPane(cardsPanel);
+
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
+
+        scroll.setBorder(null);
+
+        add(scroll,BorderLayout.CENTER);
+
+                // ================= ADD ALL CARDS =================
+
+        for (int i = 0; i < places.length; i++) {
+            cardsPanel.add(createCard(places[i], images[i]));
+        }
+
+        setVisible(true);
+
+    }
+
+    // ================= CREATE CARD =================
+
+    private JPanel createCard(String place, String imageName) {
+
+        JPanel card = new JPanel();
+        card.setLayout(null);
+        card.setPreferredSize(new Dimension(320, 360));
+        card.setBackground(Color.WHITE);
+        card.setBorder(BorderFactory.createLineBorder(new Color(220,220,220)));
+
+        // ================= IMAGE =================
+
+        JLabel imageLabel = new JLabel();
+
+        ImageIcon icon = new ImageIcon(
+                ClassLoader.getSystemResource("icons/" + imageName)
+        );
+
+        Image img = icon.getImage().getScaledInstance(
+                300,
+                180,
+                Image.SCALE_SMOOTH
+        );
+
+        imageLabel.setIcon(new ImageIcon(img));
+        imageLabel.setBounds(10,10,300,180);
+
+        card.add(imageLabel);
 
         // ================= PLACE NAME =================
 
-        placeName = new JLabel();
-        placeName.setBounds(80, 30, 800, 60);
-        placeName.setForeground(Color.WHITE);
-        placeName.setFont(new Font("Segoe UI", Font.BOLD, 45));
-        infoPanel.add(placeName);
+        JLabel name = new JLabel(place);
+        name.setBounds(20,200,250,30);
+        name.setFont(new Font("Segoe UI",Font.BOLD,22));
 
-        // ================= EXPLORE BUTTON (FIXED) =================
+        card.add(name);
 
-        explore = new JButton("Explore Now");
-        explore.setBounds(80, 140, 180, 45);
-        explore.setFont(new Font("Segoe UI", Font.BOLD, 15));
-        explore.setBackground(new Color(46, 134, 222));
+        // ================= LOCATION =================
+
+        JLabel location = new JLabel("📍 Maharashtra");
+        location.setBounds(20,235,180,25);
+        location.setFont(new Font("Segoe UI",Font.PLAIN,16));
+        location.setForeground(Color.GRAY);
+
+        card.add(location);
+
+        // ================= RATING =================
+
+        JLabel rating = new JLabel("★★★★★");
+        rating.setBounds(20,260,120,25);
+        rating.setForeground(new Color(255,140,0));
+        rating.setFont(new Font("Segoe UI",Font.BOLD,18));
+
+        card.add(rating);
+
+        // ================= EXPLORE BUTTON =================
+
+        JButton explore = new JButton("Explore");
+
+        explore.setBounds(85,305,150,40);
+
+        explore.setBackground(new Color(25,118,210));
         explore.setForeground(Color.WHITE);
+
         explore.setFocusPainted(false);
-        explore.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // IMPORTANT FIX: Safe action handling
+        explore.setFont(new Font("Segoe UI",Font.BOLD,16));
+
         explore.addActionListener(new ActionListener() {
+
+            @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (index >= 0 && index < places.length) {
-                    JOptionPane.showMessageDialog(null,
-                            "Welcome to " + places[index]);
-                }
+                showDestinationDetails(place, imageName);
+
             }
+
         });
 
-        infoPanel.add(explore);
+        card.add(explore);
 
-        // ================= BACK BUTTON =================
+        return card;
 
-        back = new JButton("Back");
-        back.setBounds(290, 140, 120, 45);
-        back.setFont(new Font("Segoe UI", Font.BOLD, 15));
-        back.setFocusPainted(false);
-        back.setBackground(Color.BLACK);
-        back.setForeground(Color.WHITE);
-        back.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        back.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
-
-        infoPanel.add(back);
-
-        // ================= START SLIDER =================
-
-        thread = new Thread(this);
-        thread.start();
-
-        setVisible(true);
     }
 
- @Override
-public void run() {
+    // ================= DESTINATION DETAILS WINDOW =================
 
-    try {
+private void showDestinationDetails(String place, String imageName) {
 
-        while (true) {
+    JFrame frame = new JFrame(place);
 
-            String path = "icons/" + images[index];
+    frame.setSize(900,650);
+    frame.setLocationRelativeTo(null);
+    frame.setLayout(null);
 
-            URL url = ClassLoader.getSystemResource(path);
+    // ================= IMAGE =================
 
-            if (url == null) {
+    JLabel image = new JLabel();
 
-                System.out.println("Image missing: " + path);
+    ImageIcon icon = new ImageIcon(
+            ClassLoader.getSystemResource("icons/" + imageName)
+    );
 
-                index++;
+    Image img = icon.getImage().getScaledInstance(
+            850,
+            300,
+            Image.SCALE_SMOOTH
+    );
 
-                if (index == images.length) {
-                    index = 0;
-                }
+    image.setIcon(new ImageIcon(img));
+    image.setBounds(20,20,850,300);
 
-                Thread.sleep(2000);
-                continue;
-            }
+    frame.add(image);
 
-            ImageIcon icon = new ImageIcon(url);
+    // ================= TITLE =================
 
-            Image img = icon.getImage().getScaledInstance(
-                    1600,
-                    900,
-                    Image.SCALE_SMOOTH
+    JLabel title = new JLabel(place);
+
+    title.setBounds(30,340,400,40);
+
+    title.setFont(new Font("Segoe UI",Font.BOLD,30));
+
+    frame.add(title);
+
+    // ================= DESCRIPTION =================
+
+    JTextArea info = new JTextArea();
+
+    info.setEditable(false);
+
+    info.setLineWrap(true);
+    info.setWrapStyleWord(true);
+
+    info.setFont(new Font("Segoe UI",Font.PLAIN,18));
+
+    info.setBounds(30,390,820,130);
+
+    info.setText(
+            "Best Time to Visit : October - February\n\n" +
+            "Estimated Budget : ₹8,000 - ₹15,000\n\n" +
+            "Things To Do :\n" +
+            "• Sightseeing\n" +
+            "• Photography\n" +
+            "• Local Food\n" +
+            "• Adventure Activities\n" +
+            "• Nature Walk"
+    );
+
+    frame.add(info);
+
+    // ================= BOOK BUTTON =================
+
+    JButton book = new JButton("Book Now");
+
+    book.setBounds(240,550,170,45);
+
+    book.setBackground(new Color(25,118,210));
+    book.setForeground(Color.WHITE);
+
+    book.setFont(new Font("Segoe UI",Font.BOLD,16));
+
+    book.setFocusPainted(false);
+
+    book.addActionListener(new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            JOptionPane.showMessageDialog(
+                    frame,
+                    "Booking page will open here."
             );
 
-            imageLabel.setIcon(new ImageIcon(img));
-
-            placeName.setText(places[index]);
-
-            index++;
-
-            if (index == images.length) {
-                index = 0;
-            }
-
-            Thread.sleep(3000);
+            // Example:
+            // new BookPackage(username);
 
         }
 
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+    });
+
+    frame.add(book);
+
+    // ================= CLOSE BUTTON =================
+
+    JButton close = new JButton("Close");
+
+    close.setBounds(450,550,170,45);
+
+    close.setBackground(Color.DARK_GRAY);
+
+    close.setForeground(Color.WHITE);
+
+    close.setFont(new Font("Segoe UI",Font.BOLD,16));
+
+    close.setFocusPainted(false);
+
+    close.addActionListener(new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            frame.dispose();
+
+        }
+
+    });
+
+    frame.add(close);
+
+    frame.setVisible(true);
+
 }
+
+// ================= SEARCH FUNCTION =================
+
+private void performSearch() {
+
+    String search = searchField.getText().trim().toLowerCase();
+
+    cardsPanel.removeAll();
+
+    for (int i = 0; i < places.length; i++) {
+
+        if (search.isEmpty() || places[i].toLowerCase().contains(search)) {
+
+            cardsPanel.add(createCard(places[i], images[i]));
+
+        }
+
+    }
+
+    cardsPanel.revalidate();
+    cardsPanel.repaint();
+
+}
+
+// ================= MAIN METHOD =================
 
 public static void main(String[] args) {
 
-    new Destinations();
+    SwingUtilities.invokeLater(new Runnable() {
+
+        @Override
+        public void run() {
+
+            new Destinations();
+
+        }
+
+    });
 
 }
 }
